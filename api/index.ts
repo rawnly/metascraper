@@ -21,7 +21,9 @@ const Handler = async (req: VercelRequest, res: VercelResponse) => {
     });
   }
 
-  const response = await fetch(body.data.url);
+  const response = await fetch(body.data.url, {
+    redirect: "follow",
+  });
 
   if (!response.ok) {
     return res.status(response.status).send(response.body);
@@ -36,7 +38,7 @@ const Handler = async (req: VercelRequest, res: VercelResponse) => {
     .map((item) => item.textContent)
     .pop();
 
-  const metas = Array.from(head.getElementsByTagName("meta")).reduce(
+  const metadata = Array.from(head.getElementsByTagName("meta")).reduce(
     (acc, item) => {
       const key = item.getAttribute("name") ?? item.getAttribute("property");
 
@@ -60,7 +62,8 @@ const Handler = async (req: VercelRequest, res: VercelResponse) => {
     {} as Record<string, any>
   );
 
-  return res.send({ title, metas });
+  res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate");
+  return res.send({ title, metadata });
 };
 
 export default Handler;
