@@ -1,0 +1,10 @@
+{
+	"dependencies": {
+		"jsdom": "^21.1.0",
+		"zod": "^3.20.2"
+	},
+	"devDependencies": {
+		"@types/jsdom": "^20.0.1",
+		"@vercel/node": "^2.8.16"
+	}
+}
